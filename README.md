@@ -1,6 +1,6 @@
 # AWS Monitoring Infrastructure — Terraform
 
-Projet personnel d’automatisation d’infrastructure cloud avec déploiement d’une stack de monitoring sur AWS à l’aide de Terraform. Ce projet permet de provisionner automatiquement les ressources nécessaires pour monitorer un environnement AWS (CloudWatch, SNS, dashboards, etc.) de manière reproductible.
+Projet personnel d’automatisation d’infrastructure cloud avec déploiement d’une stack de monitoring sur AWS à l’aide de Terraform. Ce projet permet de provisionner automatiquement les ressources nécessaires pour monitorer un environnement AWS de manière reproductible.
 
 ---
 
@@ -8,7 +8,7 @@ Projet personnel d’automatisation d’infrastructure cloud avec déploiement d
 
 - **Terraform** : Provisionnement automatique des ressources AWS (CloudWatch, SNS, IAM, etc.)  
 - **AWS CloudWatch** : Surveillance des métriques système et applications  
-- **AWS SNS** : Notifications d’alertes par email  
+- **AWS SNS** : Notifications d’alertes par email possible  
 - **AWS IAM** : Gestion des permissions pour les ressources AWS  
 
 > Ce projet est conçu pour être déployé **localement via Terraform**, sans configuration CI/CD pour le moment.
@@ -45,7 +45,7 @@ Voici une représentation simplifiée de la stack AWS déployée par Terraform :
 ## 🚀 Déploiement manuel
 
 1. Récupérer le projet sur votre machine :  
-```bash
+``bash
 git clone git@github.com:Snowfyst92/aws-monitoring.git
 cd aws-monitoring
 
