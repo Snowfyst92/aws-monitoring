@@ -48,7 +48,7 @@ Voici une représentation simplifiée de la stack AWS déployée par Terraform :
 ``bash
 git clone git@github.com:Snowfyst92/aws-monitoring.git
 cd aws-monitoring
-
+``
 Initialiser Terraform :
 
 cd terraform-aws
