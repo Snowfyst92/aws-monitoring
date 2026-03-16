@@ -57,11 +57,11 @@ Service	URL
 
 ## 📊 Exemple de requêtes PromQL pour Grafana
 
-CPU Usage :
+- CPU Usage :
 `100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)`
-RAM Usage :
+- RAM Usage :
 `(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100`
-Disk Usage :
+- Disk Usage :
 `(node_filesystem_size_bytes - node_filesystem_free_bytes) / node_filesystem_size_bytes * 100 `
 
 ## 💡 Bonnes pratiques
