@@ -53,11 +53,11 @@ cd aws-monitoring-platform/ansible`
 
 ## 🌐 Accès aux services
 Service	URL
-Grafana	`http://<IP_VM>:3000`
-Prometheus	`http://<IP_VM>:9090`
-Loki	`http://<IP_VM>:3100`
-Node Exporter	exposé sur le port 9100 via Prometheus.
-Promtail	exposé sur le port 9080 pour loki.
+- Grafana	`http://<IP_VM>:3000`
+- Prometheus	`http://<IP_VM>:9090`
+- Loki	`http://<IP_VM>:3100`
+- Node Exporter	exposé sur le port 9100 via Prometheus.
+- Promtail	exposé sur le port 9080 pour loki.
 
 ## 📊 Exemple de requêtes PromQL pour Grafana
 
