@@ -19,23 +19,40 @@ Projet personnel d’automatisation d’infrastructure cloud avec déploiement d
 
 Voici une représentation simplifiée de la stack AWS déployée par Terraform :
 
-             ┌───────────────┐
-             │  AWS Account  │
-             └───────┬───────┘
-                     │
-                     ▼
-             ┌───────────────┐
-             │ CloudWatch    │
-             │ Metrics & Alarms
-             └───────┬───────┘
-                     │
-     ┌───────────────┴───────────────┐
-     ▼                               ▼
+                 +------------------+
+                 |   Node Exporter  |
+                 | (Linux Metrics)  |
+                 +--------+---------+
+                          |
+                          v
+                 +------------------+
+                 |    Prometheus    |
+                 | (Scrape Metrics) |
+                 +--------+---------+
+                          |
+            +-------------+-------------+
+            |                           |
+            v                           v
++--------------------+        +--------------------+
+|      Grafana       |        |   Alertmanager     |
+| (Visualize Metrics |        | (Optional: alerts |
+|  & Logs Dashboard) |        |  via Slack/Email) |
++--------------------+        +--------------------+
+            ^
+            |
+            |
+   +------------------+
+   |      Loki        |
+   | (Centralized Logs)|
+   +---------+--------+
+             ^
+             |
+   +------------------+
+   |     Promtail     |
+   | (Collect & push  |
+   |   logs to Loki)  |
+   +------------------+
 
-┌───────────────┐ ┌───────────────┐
-│ SNS Topic │ │ IAM Roles │
-│ Notifications │ │ Permissions │
-└───────────────┘ └───────────────┘
 
 
 > Le diagramme montre les composants principaux : métriques et alarmes CloudWatch envoyées via SNS et contrôlées par des rôles IAM.
