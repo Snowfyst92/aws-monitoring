@@ -29,11 +29,11 @@ Promtail → collecte et envoie les logs à Loki
 
 Ports ouverts dans AWS Security Group :
 
-`3000` → Grafana
-`9090` → Prometheus
-`3100` → Loki
-`9100` → Node Exporter
-`9080` → Promtail
+- `3000` → Grafana
+- `9090` → Prometheus
+- `3100` → Loki
+- `9100` → Node Exporter
+- `9080` → Promtail
 
 ## 🚀 Déploiement
 1. Cloner le projet
