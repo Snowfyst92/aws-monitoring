@@ -1,25 +1,10 @@
 # AWS Monitoring Platform
 
-Une plateforme de monitoring complète déployée sur une VM AWS, utilisant Docker, Ansible, Prometheus, Grafana, Loki et Node Exporter.
+Une plateforme de monitoring complète déployée sur une VM AWS, utilisant Docker compose , Ansible, Prometheus, Grafana, Loki et Node Exporter.
 
 ## 🏗 Architecture de la stack
-      +------------------+
-      |      Grafana      |
-      |  (Dashboards &    |
-      |  Visualisation)   |
-      +---------+--------+
-                |
-                v
-+----------------+----------------+
-|       Prometheus & Loki           |
-|  (Metrics & Logs collection)     |
-+----+------------+----------------+
-     |            |
-     v            v
-+----+----+  +----+----+
-| Node    |  | Promtail |
-| Exporter|  |  (logs)  |
-+---------+  +----------+
+<img width="587" height="476" alt="image" src="https://github.com/user-attachments/assets/63aaa3ec-d015-439d-a772-8bc7d71cd366" />
+
 
 Node Exporter → collecte les métriques systèmes (CPU, RAM, disque…)
 
