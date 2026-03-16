@@ -26,13 +26,15 @@ Python et Ansible sur la machine locale
 
 Ports ouverts dans AWS Security Group :
 
-3000 → Grafana
+`3000` → Grafana
 
-9090 → Prometheus
+`9090` → Prometheus
 
-3100 → Loki
+`3100` → Loki
 
-9100 → Node Exporter
+`9100` → Node Exporter
+
+`9080` → Promtail
 
 ## 🚀 Déploiement
 1. Cloner le projet
