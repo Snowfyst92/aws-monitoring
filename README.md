@@ -18,7 +18,7 @@ Projet personnel d’automatisation d’infrastructure cloud avec déploiement d
 ## 🏗️ Architecture de l’infrastructure
 
 Voici une représentation simplifiée de la stack AWS déployée par Terraform :
--
+            ---------------------
                  +------------------+
                  |   Node Exporter  |
                  | (Linux Metrics)  |
