@@ -1,47 +1,28 @@
 AWS Monitoring Platform
 
-Une plateforme de monitoring complète déployée sur une VM AWS, utilisant Docker, Ansible, Prometheus, Grafana, Loki et Node Exporter.
+Ce projet déploie une plateforme de monitoring complète sur une machine virtuelle AWS avec les composants suivants :
 
+Prometheus : collecte des métriques systèmes et applications
 
+Grafana : visualisation des métriques et logs
 
-🏗 Architecture de la stack
-      +------------------+
-      |      Grafana      |
-      |  (Dashboards &    |
-      |  Visualisation)   |
-      +---------+--------+
-                |
-                v
-+----------------+----------------+
-|       Prometheus & Loki           |
-|  (Metrics & Logs collection)     |
-+----+------------+----------------+
-     |            |
-     v            v
-+----+----+  +----+----+
-| Node    |  | Promtail |
-| Exporter|  |  (logs)  |
-+---------+  +----------+
+Loki : centralisation et recherche des logs
 
-Node Exporter → collecte les métriques systèmes (CPU, RAM, disque…)
+Promtail : collecte des logs pour Loki
 
-Prometheus → scrape les métriques et les stocke
+Node Exporter : collecte des métriques systèmes (CPU, RAM, disque…)
 
-Grafana → dashboard et visualisation des métriques et logs
+Le déploiement est automatisé avec Ansible et Docker Compose.
 
-Loki → centralisation des logs
+Prérequis
 
-Promtail → collecte et envoie les logs à Loki
+Une VM Ubuntu sur AWS avec accès SSH
 
-⚙️ Prérequis
+Docker et Docker Compose installés (ou via Ansible)
 
-VM Ubuntu sur AWS avec accès SSH
+Python et Ansible installés sur ta machine locale
 
-Docker & Docker Compose installés (ou via Ansible)
-
-Python et Ansible sur la machine locale
-
-Ports ouverts dans AWS Security Group :
+Port ouvert pour :
 
 3000 → Grafana
 
@@ -51,52 +32,53 @@ Ports ouverts dans AWS Security Group :
 
 9100 → Node Exporter
 
-🚀 Déploiement
+Installation / Déploiement
 1. Cloner le projet
 git clone <TON_REPO_GITHUB>
 cd aws-monitoring-platform/ansible
-2. Modifier l’inventaire hosts.ini
+2. Modifier hosts.ini pour mettre l’IP de ta VM
 [monitoring]
 <IP_VM> ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/terraform-key
-3. Installer Docker & Docker Compose sur la VM
+3. Déployer la stack Docker avec Ansible
+a) Installer Docker et Docker Compose sur la VM
 ansible-playbook -i hosts.ini monitoring.yml
-4. Déployer la stack monitoring
+b) Déployer Prometheus, Grafana, Loki, Node Exporter
 ansible-playbook -i hosts.ini deploy-monitoring.yml
-🌐 Accès aux services
+Accéder aux services
 Service	URL
 Grafana	http://<IP_VM>:3000
 Prometheus	http://<IP_VM>:9090
 Loki	http://<IP_VM>:3100
-Node Exporter	exposé sur le port 9100 via Prometheus
-📊 Exemple de requêtes PromQL pour Grafana
+Node Exporter	métriques exposées sur 9100 (via Prometheus)
+Configuration
 
-CPU Usage :
+Les fichiers de configuration sont disponibles dans ansible/files/ :
 
-100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
+prometheus.yml
 
-RAM Usage :
+loki-config.yaml
 
-(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100
+docker-compose.yml
 
-Disk Usage :
+Pour mettre à jour la configuration, modifiez les fichiers localement et relancez :
 
-(node_filesystem_size_bytes - node_filesystem_free_bytes) / node_filesystem_size_bytes * 100
-💡 Bonnes pratiques
+ansible-playbook -i hosts.ini deploy-monitoring.yml
+Bonnes pratiques
 
-Node Exporter peut tourner via Docker ou en service systemd
+Node Exporter peut être exécuté soit via Docker, soit en tant que service systemd.
 
-Vérifier les permissions des volumes pour Grafana et Loki
+Les ports doivent être ouverts dans AWS Security Group pour accéder aux services depuis l’extérieur.
 
-Assurer l’ouverture des ports nécessaires dans AWS Security Group
+Pour Loki et Promtail, vérifiez que les volumes et chemins existent et ont les permissions correctes.
 
-🔧 Améliorations possibles
+Améliorations possibles
 
-Ajouter Alertmanager pour gérer les alertes Prometheus
+Ajouter Alertmanager pour les alertes Prometheus
 
-Créer des dashboards Grafana supplémentaires
+Ajouter des dashboards Grafana supplémentaires
 
 Centraliser les logs d’autres applications via Promtail
 
-📝 Licence
+Licence
 
 MIT License © 2026
