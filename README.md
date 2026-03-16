@@ -16,7 +16,7 @@ Loki → centralisation des logs
 
 Promtail → collecte et envoie les logs à Loki
 
-⚙️ Prérequis
+## ⚙️ Prérequis
 
 VM Ubuntu sur AWS avec accès SSH
 
@@ -34,7 +34,7 @@ Ports ouverts dans AWS Security Group :
 
 9100 → Node Exporter
 
-🚀 Déploiement
+## 🚀 Déploiement
 1. Cloner le projet
 git clone <TON_REPO_GITHUB>
 cd aws-monitoring-platform/ansible
@@ -45,13 +45,15 @@ cd aws-monitoring-platform/ansible
 ansible-playbook -i hosts.ini monitoring.yml
 4. Déployer la stack monitoring
 ansible-playbook -i hosts.ini deploy-monitoring.yml
-🌐 Accès aux services
+
+## 🌐 Accès aux services
 Service	URL
 Grafana	http://<IP_VM>:3000
 Prometheus	http://<IP_VM>:9090
 Loki	http://<IP_VM>:3100
 Node Exporter	exposé sur le port 9100 via Prometheus
-📊 Exemple de requêtes PromQL pour Grafana
+
+## 📊 Exemple de requêtes PromQL pour Grafana
 
 CPU Usage :
 
@@ -64,7 +66,8 @@ RAM Usage :
 Disk Usage :
 
 (node_filesystem_size_bytes - node_filesystem_free_bytes) / node_filesystem_size_bytes * 100
-💡 Bonnes pratiques
+
+## 💡 Bonnes pratiques
 
 Node Exporter peut tourner via Docker ou en service systemd
 
@@ -72,7 +75,7 @@ Vérifier les permissions des volumes pour Grafana et Loki
 
 Assurer l’ouverture des ports nécessaires dans AWS Security Group
 
-🔧 Améliorations possibles
+## 🔧 Améliorations possibles
 
 Ajouter Alertmanager pour gérer les alertes Prometheus
 
@@ -80,6 +83,6 @@ Créer des dashboards Grafana supplémentaires
 
 Centraliser les logs d’autres applications via Promtail
 
-📝 Licence
+## 📝 Licence
 
 MIT License © 2026
