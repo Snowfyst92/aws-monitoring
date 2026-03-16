@@ -66,7 +66,7 @@ Service	URL
 
 ## 💡 Bonnes pratiques
 
-Vérifiez les droits des applications (777 , 572, etc).
+Vérifiez les droits des applications (777 , 755, etc).
 
 Assurer l’ouverture des ports nécessaires dans AWS Security Group de manières sécurisés.
 
