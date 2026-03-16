@@ -3,6 +3,8 @@
 Une plateforme de monitoring complète déployée sur une VM AWS, utilisant Docker compose , Ansible, Prometheus, Grafana, Loki et Node Exporter.
 
 ## 🏗 Architecture de la stack
+
+
 <img width="587" height="476" alt="image" src="https://github.com/user-attachments/assets/63aaa3ec-d015-439d-a772-8bc7d71cd366" />
 
 
@@ -16,13 +18,14 @@ Loki → centralisation des logs
 
 Promtail → collecte et envoie les logs à Loki
 
-## ⚙️ Prérequis
+## ⚙️ Stack technique
 
-VM Ubuntu sur AWS avec accès SSH
-
-Docker & Docker Compose installés (ou via Ansible)
-
-Python et Ansible sur la machine locale
+- **Terraform** : Provisionnement automatique d'une instance EC2 sur AWS.
+- **Ansible** : Configuration complète de l’instance (Docker, monitoring stack, etc.).
+- **Docker Compose** : Déploiement de la stack de monitoring (promtail, prometheus, grafana, node exporter et loki).
+- **Prometheus** : Collecte des métriques système via node_exporter.
+- **Loki** : Centralisation des logs système via promtail.
+- **Grafana** : Visualisation des logs et métriques.
 
 Ports ouverts dans AWS Security Group :
 
