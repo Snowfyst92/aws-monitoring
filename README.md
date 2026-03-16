@@ -30,13 +30,9 @@ Promtail → collecte et envoie les logs à Loki
 Ports ouverts dans AWS Security Group :
 
 `3000` → Grafana
-
 `9090` → Prometheus
-
 `3100` → Loki
-
 `9100` → Node Exporter
-
 `9080` → Promtail
 
 ## 🚀 Déploiement
@@ -62,15 +58,10 @@ Service	URL
 ## 📊 Exemple de requêtes PromQL pour Grafana
 
 CPU Usage :
-
 `100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)`
-
 RAM Usage :
-
 `(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100`
-
 Disk Usage :
-
 `(node_filesystem_size_bytes - node_filesystem_free_bytes) / node_filesystem_size_bytes * 100 `
 
 ## 💡 Bonnes pratiques
