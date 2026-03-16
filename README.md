@@ -1,110 +1,100 @@
-# AWS Monitoring Infrastructure — Terraform
+AWS Monitoring Platform
 
-Projet personnel d’automatisation d’infrastructure cloud avec déploiement d’une stack de monitoring sur AWS à l’aide de Terraform. Ce projet permet de provisionner automatiquement les ressources nécessaires pour monitorer un environnement AWS de manière reproductible.
+Une plateforme de monitoring complète déployée sur une VM AWS, utilisant Docker, Ansible, Prometheus, Grafana, Loki et Node Exporter.
 
----
+🏗 Architecture de la stack
+      +------------------+
+      |      Grafana      |
+      |  (Dashboards &    |
+      |  Visualisation)   |
+      +---------+--------+
+                |
+                v
++----------------+----------------+
+|       Prometheus & Loki           |
+|  (Metrics & Logs collection)     |
++----+------------+----------------+
+     |            |
+     v            v
++----+----+  +----+----+
+| Node    |  | Promtail |
+| Exporter|  |  (logs)  |
++---------+  +----------+
 
-## ⚙️ Stack Technique
+Node Exporter → collecte les métriques systèmes (CPU, RAM, disque…)
 
-- **Terraform** : Provisionnement automatique des ressources AWS (CloudWatch, SNS, IAM, etc.)  
-- **AWS CloudWatch** : Surveillance des métriques système et applications  
-- **AWS SNS** : Notifications d’alertes par email possible  
-- **AWS IAM** : Gestion des permissions pour les ressources AWS  
+Prometheus → scrape les métriques et les stocke
 
-> Ce projet est conçu pour être déployé **localement via Terraform**, sans configuration CI/CD pour le moment.
+Grafana → dashboard et visualisation des métriques et logs
 
----
+Loki → centralisation des logs
 
-## 🏗️ Architecture de l’infrastructure
+Promtail → collecte et envoie les logs à Loki
 
-Voici une représentation simplifiée de la stack AWS déployée par Terraform :
-            ---------------------
-                 +------------------+
-                 |   Node Exporter  |
-                 | (Linux Metrics)  |
-                 +--------+---------+
-                          |
-                          v
-                 +------------------+
-                 |    Prometheus    |
-                 | (Scrape Metrics) |
-                 +--------+---------+
-                          |
-            +-------------+-------------+
-            |                           |
-            v                           v
-+--------------------+        +--------------------+
-|      Grafana       |        |   Alertmanager     |
-| (Visualize Metrics |        | (Optional: alerts |
-|  & Logs Dashboard) |        |  via Slack/Email) |
-+--------------------+        +--------------------+
-            ^
-            |
-            |
-   +------------------+
-   |      Loki        |
-   | (Centralized Logs)|
-   +---------+--------+
-             ^
-             |
-   +------------------+
-   |     Promtail     |
-   | (Collect & push  |
-   |   logs to Loki)  |
-   +------------------+
+⚙️ Prérequis
 
+VM Ubuntu sur AWS avec accès SSH
 
+Docker & Docker Compose installés (ou via Ansible)
 
-> Le diagramme montre les composants principaux : métriques et alarmes CloudWatch envoyées via SNS et contrôlées par des rôles IAM.
+Python et Ansible sur la machine locale
 
----
+Ports ouverts dans AWS Security Group :
 
-## 🚀 Déploiement manuel
+3000 → Grafana
 
-1. Récupérer le projet sur votre machine :  
-``bash
-git clone git@github.com:Snowfyst92/aws-monitoring.git
-cd aws-monitoring
-``
-Initialiser Terraform :
+9090 → Prometheus
 
-cd terraform-aws
-terraform init
+3100 → Loki
 
-Appliquer la configuration pour créer l’infrastructure :
+9100 → Node Exporter
 
-terraform apply -auto-approve
+🚀 Déploiement
+1. Cloner le projet
+git clone <TON_REPO_GITHUB>
+cd aws-monitoring-platform/ansible
+2. Modifier l’inventaire hosts.ini
+[monitoring]
+<IP_VM> ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/terraform-key
+3. Installer Docker & Docker Compose sur la VM
+ansible-playbook -i hosts.ini monitoring.yml
+4. Déployer la stack monitoring
+ansible-playbook -i hosts.ini deploy-monitoring.yml
+🌐 Accès aux services
+Service	URL
+Grafana	http://<IP_VM>:3000
+Prometheus	http://<IP_VM>:9090
+Loki	http://<IP_VM>:3100
+Node Exporter	exposé sur le port 9100 via Prometheus
+📊 Exemple de requêtes PromQL pour Grafana
 
-Toutes les ressources AWS nécessaires au monitoring seront créées automatiquement.
+CPU Usage :
 
-🔐 Configuration des variables
+100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
 
-Le projet utilise des variables Terraform définies dans variables.tf.
-Exemple de fichier terraform.tfvars :
+RAM Usage :
 
-aws_region  = "eu-west-1"
-alert_email = "alerts@example.com"
-environment = "dev"
-📊 Fonctionnalités principales
+(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100
 
-Provisionnement automatique d’alertes CloudWatch (CPU, réseau, ressources critiques)
+Disk Usage :
 
-Notifications d’alertes via SNS
+(node_filesystem_size_bytes - node_filesystem_free_bytes) / node_filesystem_size_bytes * 100
+💡 Bonnes pratiques
 
-Dashboards AWS CloudWatch pour visualiser les métriques
+Node Exporter peut tourner via Docker ou en service systemd
 
-Gestion reproductible et versionnée de l’infrastructure
+Vérifier les permissions des volumes pour Grafana et Loki
 
-🛠️ Bonnes pratiques
+Assurer l’ouverture des ports nécessaires dans AWS Security Group
 
-Ne versionnez pas les fichiers générés par Terraform :
+🔧 Améliorations possibles
 
-.terraform/
-*.tfstate*
+Ajouter Alertmanager pour gérer les alertes Prometheus
 
-Ajoutez ces lignes dans un fichier .gitignore pour éviter de pousser des fichiers volumineux.
+Créer des dashboards Grafana supplémentaires
 
-💬 À propos
+Centraliser les logs d’autres applications via Promtail
 
-Cette infrastructure permet de monitorer efficacement un environnement AWS tout en restant simple et reproductible.
-Le projet peut être étendu facilement pour intégrer d’autres services AWS ou des solutions de visualisation supplémentaires comme Grafana ou Prometheus.Monitoring d'instances déployable via AWS 
+📝 Licence
+
+MIT License © 2026
