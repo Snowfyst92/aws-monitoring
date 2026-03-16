@@ -1,0 +1,30 @@
+---
+- hosts: monitoring
+  become: yes
+  tasks:
+
+    - name: Create monitoring directory on VM
+      file:
+        path: /home/ubuntu/monitoring
+        state: directory
+        mode: '0755'
+
+    - name: Copy docker-compose.yml to VM
+      copy:
+        src: docker-compose.yml
+        dest: /home/ubuntu/monitoring/docker-compose.yml
+
+    - name: Copy Prometheus config to VM
+      copy:
+        src: prometheus.yml
+        dest: /home/ubuntu/monitoring/prometheus.yml
+
+    - name: Copy Loki config to VM
+      copy:
+        src: loki-config.yaml
+        dest: /home/ubuntu/monitoring/loki-config.yaml
+
+    - name: Launch monitoring stack with Docker Compose
+      shell: docker compose up -d
+      args:
+        chdir: /home/ubuntu/monitoring
